@@ -1,0 +1,29 @@
+name: polwell_mh
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - typer
+  - loguru
+  - arrow
+  - tqdm
+  - black
+  - flake8
+  - isort
+  - scikit-learn
+  - nltk
+  - numpy
+  - pandas
+  - tqdm
+  - joblib
+  - pytz
+  - requests
+  - json5
+  - pytest
+  - pip:
+    - python-dotenv
+    - fire
+    - sentencepiece
+    - mkdocs
+    - -e .
