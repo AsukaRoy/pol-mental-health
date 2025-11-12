@@ -71,7 +71,7 @@ def main():
             'cid':       'VARCHAR',
             'text':      'VARCHAR',
             'langs':     'VARCHAR[]',
-            'subject':   'JSON'
+
         }},
         union_by_name = true
         )

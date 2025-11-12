@@ -98,7 +98,7 @@ def test_query_user_posts_and_comments(tmp_path, n_users, request):
     # --- Pandas baseline filtering (mirror DuckDB logic) ---
     ref = df_posts[df_posts["author"].isin(users)].copy()
     ref = ref[ref["langs"].apply(lambda x: isinstance(x, list) and "en" in x)]
-    ref = ref.loc[:, ["author", "createdAt", "uri", "cid", "text", "langs"]]
+    ref = ref.loc[:, ["author", "type", "createdAt", "uri", "cid", "text", "langs"]]
     ref = ref.rename(columns={"uri": "post_id", "cid": "post_cid"})
 
     # --- Compare ---

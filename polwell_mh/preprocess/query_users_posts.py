@@ -78,7 +78,8 @@ def query_user_posts(input: str, users: str, output: str):
                 'uri':       'VARCHAR',
                 'cid':       'VARCHAR',
                 'text':      'VARCHAR',
-                'langs':     'VARCHAR[]'
+                'langs':     'VARCHAR[]',
+
             }},
             union_by_name = true
         )
@@ -86,6 +87,7 @@ def query_user_posts(input: str, users: str, output: str):
     SELECT DISTINCT
         author,
         createdAt,
+        type,
         uri AS post_id,
         cid AS post_cid,
         text,
