@@ -192,3 +192,4 @@ cython_debug/
 .pypirc
 
 references/lexicons/LIWC*
+references/DASSL_classifiers/*
