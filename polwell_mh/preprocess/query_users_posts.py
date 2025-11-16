@@ -33,13 +33,17 @@ def query_user_posts(input: str, users: str, output: str):
     """
 
     # --- Load usernames ---
+
     with open(users, "r") as f:
-        usernames = json.load(f)
-    if not isinstance(usernames, list) or not all(isinstance(u, str) for u in usernames):
-        raise ValueError("The users JSON must be a list of strings (usernames).")
+        data = json.load(f)
+
+    # Extract usernames from dictionary keys
+    if not isinstance(data, dict):
+        raise ValueError("Expected JSON to be a dictionary where keys are usernames.")
+
+    usernames = list(data.keys())
 
     print(f"Loaded {len(usernames)} usernames.")
-
     # --- Ensure output directory exists ---
     output_path = Path(output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -54,7 +58,7 @@ def query_user_posts(input: str, users: str, output: str):
     conn.execute("PRAGMA threads=8")
 
     # --- Query parameters ---
-    MIN_TEXT_LENGTH = 15
+    #MIN_TEXT_LENGTH = 15
     LANGUAGE_TEXT = "en"
     usernames_str = ", ".join(f"'{u}'" for u in usernames)
     input_path = input

@@ -193,3 +193,7 @@ cython_debug/
 
 references/lexicons/LIWC*
 references/DASSL_classifiers/*
+
+# Temporary files created triton
+*.out
+*.err

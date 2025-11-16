@@ -2,38 +2,64 @@
 post_aggregation.py
 
 Purpose:
-    Aggregates repost counts for each post from previously filtered Bluesky firehose data.
-    Reads all filtered Parquet files, groups posts by post ID, target (original author), and text,
-    then counts the number of reposts per post. Outputs the results as a single Parquet file.
+    Loads all filtered Bluesky firehose Parquet files and performs a deduplication-style
+    aggregation of posts. The script groups posts by their core identifiers
+    (post_id, post_cid, author, createdAt, type, text) to produce a unique set
+    of posts from the filtered dataset.
+
+    This step is intended to prepare a clean, aggregated table of unique posts
+    for subsequent processing (e.g., computing repost statistics or engagement
+    metrics in later steps).
 
 Inputs:
-    Reads from: /m/cs/scratch/ecanet/bluesky_datapool/filtered/*/*
+    Reads from:
+        /scratch/cs/ecanet/polwell-mental-health/polwell_mh/data/raw/filtered/*
 
 Outputs:
-    Writes to: /m/cs/scratch/ecanet/bluesky_datapool/aggregates/aggregate-0001.parquet
+    Writes a single Parquet file containing the aggregated (grouped) posts to:
+        /scratch/cs/ecanet/polwell-mental-health/polwell_mh/data/interim/aggregates/aggregate-0001.parquet
 
 Usage:
-    Run as a standalone script after filtering step.
+    Run this script after the filtering stage to produce a unique/aggregated
+    post-level dataset.
 """
 
 import duckdb
+import glob
+from loguru import logger
 
 def main():
     # Define aggregation query
-    QUERY = """
-    SELECT 
+
+    paths = glob.glob("/scratch/cs/ecanet/polwell-mental-health/polwell_mh/data/raw/filtered/*.parquet")
+
+    valid_paths = []
+
+    for p in paths:
+        try:
+            duckdb.sql(f"SELECT * FROM read_parquet('{p}') LIMIT 1").fetchall()
+            valid_paths.append(p)
+        except:
+            logger.warning(f"Skipping corrupted parquet: {p}")
+    logger.info(f"Found {len(valid_paths)} valid parquet files out of {len(paths)} total.")
+
+    QUERY = f"""
+    SELECT DISTINCT
         post_id,
-        target,
-        text,
-        COUNT(*) AS repost_count
-    FROM read_parquet('/m/cs/scratch/ecanet/bluesky_datapool/raw_filtered/*/*')
-    GROUP BY post_id, target, text
-    ORDER BY repost_count DESC
+        post_cid,
+        author,
+        createdAt,
+        type,
+        text
+    FROM read_parquet({valid_paths})
     """
 
     # Connect directly to DuckDB database
     conn = duckdb.connect()
-    
+    #count = conn.execute("SELECT COUNT(*) FROM read_parquet('/scratch/cs/ecanet/polwell-mental-health/polwell_mh/data/raw/filtered/*')").fetchone()[0]
+    #logger = duckdb.get_logger()
+    #logger.set_level(duckdb.DuckDBLogLevel.DEBUG)
+    #logger.info(f"Total number of rows in input data: {count}")
     # Enable progress bar
     conn.execute("SET enable_progress_bar = true")
     # Use all available threads
@@ -41,7 +67,7 @@ def main():
 
     # Set output file path
     output_file = (
-        "/m/cs/scratch/ecanet/bluesky_datapool/aggregates/aggregate-0001.parquet"
+        "/scratch/cs/ecanet/polwell-mental-health/polwell_mh/data/interim/aggregates/aggregate-0001.parquet"
     )
 
     # Execute and save query directly to Parquet
