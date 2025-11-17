@@ -43,30 +43,20 @@ import multiprocessing as mp
 import sys
 import sklearn.svm
 from pathlib import Path
+
 sys.modules["sklearn.svm.classes"] = sklearn.svm
 
 
 class LoadDASSClassifiers:
     def __init__(self):
-        self.dassTypes = [
-            "anxiety", 
-            "stress", 
-            "depression", 
-            "suicide", 
-            "psychosis", 
-            'loneliness'
-            ]
+        self.dassTypes = ["anxiety", "stress", "depression", "suicide", "psychosis", "loneliness"]
         self.ngVectorizers_dic = {}
 
         self.classifers_dic = {}
 
         for i in self.dassTypes:
-            ngVectorizer = joblib.load(
-                DASSL_CLASSIFIER_DIR / (i + "NgVectorizer.pickle")
-            )
-            classifier = joblib.load(
-                DASSL_CLASSIFIER_DIR / (i + "Classifier.pickle")
-            )
+            ngVectorizer = joblib.load(DASSL_CLASSIFIER_DIR / (i + "NgVectorizer.pickle"))
+            classifier = joblib.load(DASSL_CLASSIFIER_DIR / (i + "Classifier.pickle"))
             self.ngVectorizers_dic[i] = ngVectorizer
             self.classifers_dic[i] = classifier
 
@@ -90,7 +80,8 @@ class LoadDASSClassifiers:
             classifier = self.classifers_dic[dassType]
             df[f"DASS_{dassType}"] = classifier.predict(ngX)
         return df
-    
+
+
 def main(input_path: str, text_column: str, output_path: str = PROCESSED_DATA_DIR):
     dassl = LoadDASSClassifiers()
 
@@ -113,7 +104,6 @@ def main(input_path: str, text_column: str, output_path: str = PROCESSED_DATA_DI
 
     logger.info(f"Saving DASSL classified DataFrame to: {output_path}")
     output_df.to_parquet(output_path / f"DASSL/postsDASSL_{date_str}.parquet", index=False)
-
 
 
 if __name__ == "__main__":

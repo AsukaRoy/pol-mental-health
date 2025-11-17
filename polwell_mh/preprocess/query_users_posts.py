@@ -58,7 +58,7 @@ def query_user_posts(input: str, users: str, output: str):
     conn.execute("PRAGMA threads=8")
 
     # --- Query parameters ---
-    #MIN_TEXT_LENGTH = 15
+    # MIN_TEXT_LENGTH = 15
     LANGUAGE_TEXT = "en"
     usernames_str = ", ".join(f"'{u}'" for u in usernames)
     input_path = input

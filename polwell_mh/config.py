@@ -24,7 +24,7 @@ MODELS_DIR = PROJ_ROOT / "models"
 REPORTS_DIR = PROJ_ROOT / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 
-REFERENCE_DIC = PROJ_ROOT / "references" 
+REFERENCE_DIC = PROJ_ROOT / "references"
 LEXICON_DIR = REFERENCE_DIC / "lexicons"
 DASSL_CLASSIFIER_DIR = REFERENCE_DIC / "DASSL_classifiers"
 

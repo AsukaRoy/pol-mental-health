@@ -41,9 +41,7 @@ def main():
     date_str = match.group(1)
 
     # Define output directory and file
-    output_dir = (
-        Path("/m/cs/scratch/ecanet/bluesky_datapool/raw_filtered") / date_str
-    )
+    output_dir = Path("/m/cs/scratch/ecanet/bluesky_datapool/raw_filtered") / date_str
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / f"{date_str}-filtered.parquet"
 

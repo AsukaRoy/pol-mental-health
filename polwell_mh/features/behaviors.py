@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def summarize_user_actions(csv_path: str) -> pd.DataFrame:
     """
     Summarize user actions from a Bluesky dataset CSV file.
@@ -28,7 +29,7 @@ def summarize_user_actions(csv_path: str) -> pd.DataFrame:
         "app.bsky.feed.post": "posts",
         "app.bsky.feed.repost": "reposts",
         "app.bsky.graph.follow": "follows",
-        "app.bsky.feed.like": "likes"
+        "app.bsky.feed.like": "likes",
     }
 
     # Filter only known types
@@ -38,12 +39,7 @@ def summarize_user_actions(csv_path: str) -> pd.DataFrame:
     df["action_category"] = df["type"].map(action_map)
 
     # Count number of actions per author and category
-    summary = (
-        df.groupby(["author", "action_category"])
-        .size()
-        .unstack(fill_value=0)
-        .reset_index()
-    )
+    summary = df.groupby(["author", "action_category"]).size().unstack(fill_value=0).reset_index()
     summary.columns.name = None  # ✅ removes 'action_category'
     # Ensure all expected columns exist; fill missing with zeros
     for col in action_map.values():

@@ -28,10 +28,13 @@ import duckdb
 import glob
 from loguru import logger
 
+
 def main():
     # Define aggregation query
 
-    paths = glob.glob("/scratch/cs/ecanet/polwell-mental-health/polwell_mh/data/raw/filtered/*.parquet")
+    paths = glob.glob(
+        "/scratch/cs/ecanet/polwell-mental-health/polwell_mh/data/raw/filtered/*.parquet"
+    )
 
     valid_paths = []
 
@@ -56,19 +59,17 @@ def main():
 
     # Connect directly to DuckDB database
     conn = duckdb.connect()
-    #count = conn.execute("SELECT COUNT(*) FROM read_parquet('/scratch/cs/ecanet/polwell-mental-health/polwell_mh/data/raw/filtered/*')").fetchone()[0]
-    #logger = duckdb.get_logger()
-    #logger.set_level(duckdb.DuckDBLogLevel.DEBUG)
-    #logger.info(f"Total number of rows in input data: {count}")
+    # count = conn.execute("SELECT COUNT(*) FROM read_parquet('/scratch/cs/ecanet/polwell-mental-health/polwell_mh/data/raw/filtered/*')").fetchone()[0]
+    # logger = duckdb.get_logger()
+    # logger.set_level(duckdb.DuckDBLogLevel.DEBUG)
+    # logger.info(f"Total number of rows in input data: {count}")
     # Enable progress bar
     conn.execute("SET enable_progress_bar = true")
     # Use all available threads
     conn.execute("PRAGMA threads=24")
 
     # Set output file path
-    output_file = (
-        "/scratch/cs/ecanet/polwell-mental-health/polwell_mh/data/interim/aggregates/aggregate-0001.parquet"
-    )
+    output_file = "/scratch/cs/ecanet/polwell-mental-health/polwell_mh/data/interim/aggregates/aggregate-0001.parquet"
 
     # Execute and save query directly to Parquet
     conn.execute(f"COPY ({QUERY}) TO '{output_file}' (FORMAT parquet)")
