@@ -12,10 +12,11 @@ Usage:
         --output /output/dir/user_posts.parquet
 """
 
-import duckdb
 import json
-import re
 from pathlib import Path
+import re
+
+import duckdb
 import fire
 
 

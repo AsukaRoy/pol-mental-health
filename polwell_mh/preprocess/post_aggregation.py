@@ -24,8 +24,9 @@ Usage:
     post-level dataset.
 """
 
-import duckdb
 import glob
+
+import duckdb
 from loguru import logger
 
 

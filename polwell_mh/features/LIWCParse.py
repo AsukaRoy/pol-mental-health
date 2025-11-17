@@ -1,27 +1,27 @@
 # coding: utf-8
 
-from pathlib import Path
-import string
-import sys, os
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from time import time
-import fire
-
-from loguru import logger
-from tqdm import tqdm
-
-from polwell_mh.config import LEXICON_DIR, PROCESSED_DATA_DIR
-
-import numpy as np
-import pandas
 
 # import matplotlib.pyplot as plt
 import gzip
 import json
+import os
+from pathlib import Path
 import re
-from nltk.tokenize import RegexpTokenizer
-from nltk import word_tokenize, sent_tokenize
+import string
+import sys
+from time import time
+
+import fire
+from loguru import logger
 import nltk
+from nltk import sent_tokenize, word_tokenize
+from nltk.tokenize import RegexpTokenizer
+import numpy as np
+import pandas
+from tqdm import tqdm
+
+from polwell_mh.config import LEXICON_DIR, PROCESSED_DATA_DIR
 
 nltk.download("punkt_tab")
 

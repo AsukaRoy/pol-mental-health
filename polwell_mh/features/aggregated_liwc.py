@@ -2,12 +2,13 @@
     Module to aggregate LIWC categories into broader features.
 """
 
-import re
 from pathlib import Path
+import re
+
+import fire
 from loguru import logger
 import numpy as np
 import pandas as pd
-import fire
 from tqdm import tqdm
 
 from polwell_mh.config import PROCESSED_DATA_DIR

@@ -2,22 +2,20 @@
 Linguistic analysis feature extraction.
 """
 
-import re
-
 from pathlib import Path
-from venv import logger
-import fire
-
-from nltk.corpus import stopwords
-from nltk import word_tokenize
-from nltk.util import ngrams
-from polwell_mh.config import PROCESSED_DATA_DIR
-
-import textstat
+import re
 import string
+from venv import logger
 
+import fire
+from nltk import word_tokenize
+from nltk.corpus import stopwords
+from nltk.util import ngrams
 import pandas as pd
+import textstat
 from tqdm import tqdm
+
+from polwell_mh.config import PROCESSED_DATA_DIR
 
 STOP_WORDS = set(stopwords.words("english"))
 

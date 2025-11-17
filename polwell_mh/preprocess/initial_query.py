@@ -17,9 +17,10 @@ Outputs:
 """
 
 import argparse
-import duckdb
-import re
 from pathlib import Path
+import re
+
+import duckdb
 
 
 def main():
