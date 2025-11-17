@@ -195,7 +195,7 @@ def run_parse_liwc(input_path: str, text_column: str, output_parquet: str = PROC
     logger.info(f"liwc_df DataFrame shape: {liwc_df.shape}")
     # save as parquet
     logger.info(f"Saving output Parquet file with LIWC features: {output_parquet}")
-    liwc_df.to_parquet(output_parquet / f"postsLiwcDF_{date_str}.parquet", index=False)
+    liwc_df.to_parquet(output_parquet / f"LIWC/postsLiwcDF_{date_str}.parquet", index=False)
     # logger outdf info
     logger.info(f"Output DataFrame info:\n{liwc_df.info()}")
 
